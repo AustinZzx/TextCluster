@@ -14,3 +14,19 @@ def DPSParser():
             if casetext[0] and casetext[2] and casetext[3] and len(casetext[1])>2:
                 resultlist.append(DPSCase(casetext[0], casetext[1], casetext[2], casetext[3]))
     return resultlist
+
+
+def dictify(cases, dict, classdict):
+    for case in cases:
+        if case.ccClass in dict:
+            dict[case.ccClass].append(case.information)
+            classdict[case.ccClass] += case.information
+        else:
+            dict[case.ccClass] = [case.information]
+            classdict[case.ccClass] = case.information
+
+
+def dicttolist(dict, values, keys):
+    for i in dict.keys():
+        keys.append(i)
+        values.append(dict[i])
