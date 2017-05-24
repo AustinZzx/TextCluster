@@ -1,9 +1,10 @@
 import nltk
 import string
-
+import collections
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from nltk.corpus import stopwords
+from sklearn.cluster import KMeans
 
 from DPSParser import *
 
@@ -16,24 +17,34 @@ def tokenize(text):
     return filtered_tokens
 
 def get_similarity(lhs, rhs):
-	try:
-		tfidf = TfidfVectorizer(min_df=1, tokenizer=tokenize, stop_words=None)
-		tfs_matrix = tfidf.fit_transform([lhs, rhs])
-		similarity = cosine_similarity(tfs_matrix)
-	except:
-		return -1;
-	return similarity[0][1]
+    try:
+        tfidf = TfidfVectorizer(min_df=1, tokenizer=tokenize, stop_words=None)
+        tfs_matrix = tfidf.fit_transform([lhs, rhs])
+        similarity = cosine_similarity(tfs_matrix)
+    except:
+        return -1;
+    return similarity[0][1]
 
 def get_similarity_matrix(mylist):
-	tfidf = TfidfVectorizer(min_df=1, tokenizer=tokenize, stop_words=None)
-	tfs_matrix = tfidf.fit_transform(mylist)
-	similarity = cosine_similarity(tfs_matrix)
-	return similarity
+    tfidf = TfidfVectorizer(min_df=1, tokenizer=tokenize, stop_words=None)
+    tfs_matrix = tfidf.fit_transform(mylist)
+    similarity = cosine_similarity(tfs_matrix)
+    return similarity
+
+def cluster_classes(mylist, nb_of_clusters=5):
+    tfidf = TfidfVectorizer(min_df=1, tokenizer=tokenize, stop_words=None)
+    tfs_matrix = tfidf.fit_transform(mylist)
+    kmeans = KMeans(n_clusters=nb_of_clusters)
+    kmeans.fit(tfs_matrix)
+    clusters = collections.defaultdict(list)
+    for i, label in enumerate(kmeans.labels_):
+        clusters[label].append(i)
+    return dict(clusters)
 
 """tfidf = TfidfVectorizer(tokenizer=tokenize, stop_words='english')
 dpsc = DPSParser()
 dpsinfo = []
 for x in xrange(10):
-	dpsinfo.append(dpsc[x].information)
+    dpsinfo.append(dpsc[x].information)
 tfs = tfidf.fit_transform(dpsinfo)
 print(cosine_similarity(tfs))"""
