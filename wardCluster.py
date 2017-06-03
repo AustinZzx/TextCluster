@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 dpsc = DPSParser()
 myDict = {}
 myclassDict = {}
-dictify(dpsc, myDict, myclassDict)
+dictifyDescription(dpsc, myDict, myclassDict)
 myclassInfo = []
 myClassList = []
 dicttolist(myclassDict, myclassInfo, myClassList)

@@ -16,7 +16,7 @@ def DPSParser():
     return resultlist
 
 
-def dictify(cases, dict, classdict):
+def dictifyClass(cases, dict, classdict):
     for case in cases:
         if case.ccClass in dict:
             dict[case.ccClass].append(case.information)
@@ -24,6 +24,15 @@ def dictify(cases, dict, classdict):
         else:
             dict[case.ccClass] = [case.information]
             classdict[case.ccClass] = case.information
+
+def dictifyDescription(cases, dict, classdict):
+    for case in cases:
+        if case.ccDescription in dict:
+            dict[case.ccDescription].append(case.information)
+            classdict[case.ccDescription] += case.information
+        else:
+            dict[case.ccDescription] = [case.information]
+            classdict[case.ccDescription] = case.information
 
 
 def dicttolist(dict, values, keys):
