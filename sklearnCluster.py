@@ -41,10 +41,10 @@ def cluster_classes(mylist, nb_of_clusters=5):
         clusters[label].append(i)
     return dict(clusters)
 
-"""tfidf = TfidfVectorizer(tokenizer=tokenize, stop_words='english')
-dpsc = DPSParser()
-dpsinfo = []
-for x in xrange(10):
-    dpsinfo.append(dpsc[x].information)
-tfs = tfidf.fit_transform(dpsinfo)
-print(cosine_similarity(tfs))"""
+def classify(case, cclist, num):
+    my_list = []
+    for cc in cclist:
+        score = get_similarity(case, cc)
+        my_list.append(score)
+    resultlist = sorted(range(len(my_list)), key=lambda i: my_list[i], reverse=True)[:num]
+    return resultlist
